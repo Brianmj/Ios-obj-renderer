@@ -12,6 +12,11 @@
 		C17A86AB1C824D1F00C73422 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C17A86A91C824D1F00C73422 /* Main.storyboard */; };
 		C17A86AD1C824D1F00C73422 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C17A86AC1C824D1F00C73422 /* Assets.xcassets */; };
 		C17A86B01C824D1F00C73422 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C17A86AE1C824D1F00C73422 /* LaunchScreen.storyboard */; };
+		C1D37CCB1C824E2800DC2599 /* cube.obj in Resources */ = {isa = PBXBuildFile; fileRef = C1D37CCA1C824E2800DC2599 /* cube.obj */; };
+		C1D37CCD1C824E3000DC2599 /* cube.mtl in Resources */ = {isa = PBXBuildFile; fileRef = C1D37CCC1C824E3000DC2599 /* cube.mtl */; };
+		C1D37CCF1C824EBB00DC2599 /* obj_source.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D37CCE1C824EBB00DC2599 /* obj_source.swift */; };
+		C1E7EFD21C8F67210011F45E /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E7EFD01C8F67210011F45E /* Metal.framework */; };
+		C1E7EFD31C8F67210011F45E /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E7EFD11C8F67210011F45E /* MetalKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +27,11 @@
 		C17A86AC1C824D1F00C73422 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C17A86AF1C824D1F00C73422 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C17A86B11C824D1F00C73422 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C1D37CCA1C824E2800DC2599 /* cube.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.obj; sourceTree = "<group>"; };
+		C1D37CCC1C824E3000DC2599 /* cube.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = cube.mtl; sourceTree = "<group>"; };
+		C1D37CCE1C824EBB00DC2599 /* obj_source.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = obj_source.swift; path = ../obj_source.swift; sourceTree = "<group>"; };
+		C1E7EFD01C8F67210011F45E /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		C1E7EFD11C8F67210011F45E /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +39,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1E7EFD21C8F67210011F45E /* Metal.framework in Frameworks */,
+				C1E7EFD31C8F67210011F45E /* MetalKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +50,8 @@
 		C17A86991C824D1F00C73422 = {
 			isa = PBXGroup;
 			children = (
+				C1E7EFD01C8F67210011F45E /* Metal.framework */,
+				C1E7EFD11C8F67210011F45E /* MetalKit.framework */,
 				C17A86A41C824D1F00C73422 /* ios_cube_loader */,
 				C17A86A31C824D1F00C73422 /* Products */,
 			);
@@ -54,9 +68,12 @@
 		C17A86A41C824D1F00C73422 /* ios_cube_loader */ = {
 			isa = PBXGroup;
 			children = (
+				C1D37CCE1C824EBB00DC2599 /* obj_source.swift */,
 				C17A86A51C824D1F00C73422 /* AppDelegate.swift */,
 				C17A86A71C824D1F00C73422 /* ViewController.swift */,
 				C17A86A91C824D1F00C73422 /* Main.storyboard */,
+				C1D37CCC1C824E3000DC2599 /* cube.mtl */,
+				C1D37CCA1C824E2800DC2599 /* cube.obj */,
 				C17A86AC1C824D1F00C73422 /* Assets.xcassets */,
 				C17A86AE1C824D1F00C73422 /* LaunchScreen.storyboard */,
 				C17A86B11C824D1F00C73422 /* Info.plist */,
@@ -123,6 +140,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1D37CCB1C824E2800DC2599 /* cube.obj in Resources */,
+				C1D37CCD1C824E3000DC2599 /* cube.mtl in Resources */,
 				C17A86B01C824D1F00C73422 /* LaunchScreen.storyboard in Resources */,
 				C17A86AD1C824D1F00C73422 /* Assets.xcassets in Resources */,
 				C17A86AB1C824D1F00C73422 /* Main.storyboard in Resources */,
@@ -138,6 +157,7 @@
 			files = (
 				C17A86A81C824D1F00C73422 /* ViewController.swift in Sources */,
 				C17A86A61C824D1F00C73422 /* AppDelegate.swift in Sources */,
+				C1D37CCF1C824EBB00DC2599 /* obj_source.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +307,7 @@
 				C17A86B61C824D1F00C73422 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
