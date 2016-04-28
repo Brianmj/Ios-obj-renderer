@@ -96,19 +96,15 @@ class ObjReader {
         mesh = [ObjMesh]()
         
         var objStr = String()
-        var matStr = String()
         do{
             let objUrl = NSBundle.mainBundle().URLForResource(objFileName, withExtension: "obj")
-            let matUrl = NSBundle.mainBundle().URLForResource(objFileName, withExtension: "mtl")
             
                 objStr = try String(contentsOfURL: objUrl!)
-                matStr = try String(contentsOfURL: matUrl!)
         }catch let error as NSError {
             fatalError(error.debugDescription)
         }
         
         print(objStr)
-        print(matStr)
         
         parseObjFile(objStr)
     }
@@ -146,8 +142,6 @@ class ObjReader {
         case .VERTEX_TEXTURE_NORMAL:
             fatalError("Vertex texture normal array construction not implemented yet")
 
-        default:
-            fatalError()
         }
         
         return data
