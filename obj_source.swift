@@ -47,7 +47,7 @@ struct PointXYZW {
         self.w = w
     }
 }
-enum ObjFormat {
+enum ObjFormat: Int {
     case VERTEX
     case VERTEX_TEXTURE
     case VERTEX_TEXTURE_NORMAL
@@ -81,14 +81,17 @@ class ObjReader {
     private static let NEW_MESH_REGEX_PATTERN = "usemtl (\\w+)"
     private static let VERTEX_NORMAL_REGEX_PATTERN = "(\\d+)//(\\d+)"
     
-    var vertices: [PointXYZW]
-    var normals: [PointXYZW]
+    private var vertices: [PointXYZW]
+    private var normals: [PointXYZW]
     
-    var mesh: [ObjMesh]
+    private var mesh: [ObjMesh]
     
-    var objFormat: ObjFormat!
+    private var objFormat: ObjFormat!
     
-    init (objFileName: String) {
+    // =============================================================================
+    // PUBLIC INTERFACE
+    // =============================================================================
+    init? (objFileName: String) {
         
         vertices = [PointXYZW]()
         normals = [PointXYZW]()
@@ -100,8 +103,8 @@ class ObjReader {
             let objUrl = NSBundle.mainBundle().URLForResource(objFileName, withExtension: "obj")
             
                 objStr = try String(contentsOfURL: objUrl!)
-        }catch let error as NSError {
-            fatalError(error.debugDescription)
+        }catch {
+            return nil
         }
         
         print(objStr)
@@ -109,7 +112,20 @@ class ObjReader {
         parseObjFile(objStr)
     }
     
-    func arrayData() -> [PointXYZW] {
+    var modelFormat: ObjFormat {
+        get {
+            return objFormat
+        }
+    }
+    
+    var vertexCountForFirstMesh: Int {
+        get {
+            return (mesh.first?.indicesCount)!
+        }
+    }
+    
+    // Returns the models data in sorted order by index
+    func sortedArrayData() -> [PointXYZW] {
         
         var data:[PointXYZW] = [PointXYZW]()
         
@@ -146,6 +162,10 @@ class ObjReader {
         
         return data
     }
+    
+    // =============================================================================
+    // END OF PUBLIC INTERFACE
+    // =============================================================================
     
     private func parseObjFile(objStr: String) {
         let lines = objStr.componentsSeparatedByString("\n")
@@ -329,14 +349,46 @@ class MaterialReader {
     
 }
 
-class Obj {
+class ObjData {
     let buffer: MTLBuffer! = nil
+    var format: ObjFormat = ObjFormat.VERTEX
+    var vertexCount: Int = 0
     
     init(objFileName: String, device: MTLDevice) {
+        prepareModel(objFileName, device: device)
+    }
+    
+    private func prepareModel(objFileName: String, device: MTLDevice) {
+        guard let objReader = openObjFile(objFileName) else {
+            fatalError()
+        }
+        
+        setModelFormat(objReader)
+        setVertexCount(objReader)
+        let arrayData = getArrayData(objReader)
+        fillBufferWithArrayData(device, arrayData: arrayData)
         
     }
     
-    func prepareModel(objFileName: String) {
-        
+    private func openObjFile(objFileName: String) -> ObjReader? {
+        return ObjReader(objFileName: objFileName)
     }
+    
+    private func setModelFormat(reader: ObjReader) {
+        format = reader.modelFormat
+    }
+    
+    private func setVertexCount(reader: ObjReader) {
+        vertexCount = reader.vertexCountForFirstMesh
+    }
+    
+    private func getArrayData(reader: ObjReader) -> [PointXYZW] {
+        return reader.sortedArrayData()
+    }
+    
+    private func fillBufferWithArrayData(device: MTLDevice, arrayData: [PointXYZW]) {
+        let bufferSize = sizeof(PointXYZW) * arrayData.count
+        device.newBufferWithBytes(arrayData, length: bufferSize, options: [])
+    }
+    
 }
