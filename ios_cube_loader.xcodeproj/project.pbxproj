@@ -17,6 +17,7 @@
 		C1D37CCF1C824EBB00DC2599 /* obj_source.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D37CCE1C824EBB00DC2599 /* obj_source.swift */; };
 		C1E7EFD21C8F67210011F45E /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E7EFD01C8F67210011F45E /* Metal.framework */; };
 		C1E7EFD31C8F67210011F45E /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C1E7EFD11C8F67210011F45E /* MetalKit.framework */; };
+		C1F2F19A1CE68D4600F6CD08 /* obj_shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = C1F2F1991CE68D4600F6CD08 /* obj_shaders.metal */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		C1D37CCE1C824EBB00DC2599 /* obj_source.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = obj_source.swift; path = ../obj_source.swift; sourceTree = "<group>"; };
 		C1E7EFD01C8F67210011F45E /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		C1E7EFD11C8F67210011F45E /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		C1F2F1991CE68D4600F6CD08 /* obj_shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = obj_shaders.metal; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				C1D37CCE1C824EBB00DC2599 /* obj_source.swift */,
+				C1F2F1991CE68D4600F6CD08 /* obj_shaders.metal */,
 				C17A86A51C824D1F00C73422 /* AppDelegate.swift */,
 				C17A86A71C824D1F00C73422 /* ViewController.swift */,
 				C17A86A91C824D1F00C73422 /* Main.storyboard */,
@@ -157,6 +160,7 @@
 			files = (
 				C17A86A81C824D1F00C73422 /* ViewController.swift in Sources */,
 				C17A86A61C824D1F00C73422 /* AppDelegate.swift in Sources */,
+				C1F2F19A1CE68D4600F6CD08 /* obj_shaders.metal in Sources */,
 				C1D37CCF1C824EBB00DC2599 /* obj_source.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

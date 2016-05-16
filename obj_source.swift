@@ -71,7 +71,7 @@ struct ObjMesh {
     }
 }
 
-class ObjReader {
+final class ObjReader {
     
     private static let VERTEX_HEADER = "v "
     private static let NORMAL_HEADER = "vn"
@@ -318,7 +318,8 @@ class ObjReader {
             }
             
         } catch let error as NSError {
-                fatalError(error.localizedDescription)
+            
+            fatalError(error.localizedDescription)
         }
     }
 
@@ -349,14 +350,31 @@ class MaterialReader {
     
 }
 
-class ObjData {
-    let buffer: MTLBuffer! = nil
-    var format: ObjFormat = ObjFormat.VERTEX
-    var vertexCount: Int = 0
-    
+final class ObjContainer {
+    private let buffer: MTLBuffer! = nil
+    private var format: ObjFormat = ObjFormat.VERTEX
+    private var vertexCount: Int = 0
+    // =============================================================================
+    // PUBLIC INTERFACE
+    // =============================================================================
     init(objFileName: String, device: MTLDevice) {
         prepareModel(objFileName, device: device)
     }
+    
+    var numberOfVertices: Int {
+        get {
+            return vertexCount
+        }
+    }
+    
+    var modelFormat: ObjFormat {
+        return format
+    }
+    
+    
+    // =============================================================================
+    // END OF PUBLIC INTERFACE
+    // =============================================================================
     
     private func prepareModel(objFileName: String, device: MTLDevice) {
         guard let objReader = openObjFile(objFileName) else {
@@ -390,5 +408,47 @@ class ObjData {
         let bufferSize = sizeof(PointXYZW) * arrayData.count
         device.newBufferWithBytes(arrayData, length: bufferSize, options: [])
     }
+}
+
+final class ObjShaderContainer {
     
+    private let vn_vertex_func_string = "obj_vertex_normal_vertex_func"
+    private let vn_fragment_func_string = "obj_vertex_normal_fragment_func"
+    
+    private var vn_vertex_func: MTLFunction?
+    private var vn_fragment_func: MTLFunction?
+    
+
+    init(device: MTLDevice) {
+        let library = openNewDefaultLibrary(device)
+        checkFunctionNames(library!)
+        resolveFunctions(library!)
+    }
+    
+    private func openNewDefaultLibrary(device: MTLDevice) -> MTLLibrary?{
+        return device.newDefaultLibrary()
+    }
+    
+    private func checkFunctionNames(lib: MTLLibrary){
+        let functionNames = lib.functionNames
+        
+        // make sure these functions are in the shader
+        guard functionNames.contains(vn_vertex_func_string) else {
+            fatalError("Cannot find required function \(vn_vertex_func_string)")
+        }
+        
+        guard functionNames.contains(vn_fragment_func_string) else {
+            fatalError("Cannot find required function: \(vn_fragment_func_string)")
+        }
+    }
+    
+    private func resolveFunctions(lib: MTLLibrary) {
+        vn_vertex_func = lib.newFunctionWithName(vn_vertex_func_string)
+        vn_fragment_func = lib.newFunctionWithName(vn_fragment_func_string)
+    }
+    
+    private func compileRenderPipelineShaderObjects(device: MTLDevice) {
+        let pipelineDesc: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
+        
+    }
 }
