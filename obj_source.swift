@@ -354,6 +354,7 @@ final class ObjContainer {
     private let buffer: MTLBuffer! = nil
     private var format: ObjFormat = ObjFormat.VERTEX
     private var vertexCount: Int = 0
+ 
     // =============================================================================
     // PUBLIC INTERFACE
     // =============================================================================
@@ -410,6 +411,7 @@ final class ObjContainer {
     }
 }
 
+// To hold all the shaders used to render an obj 
 final class ObjShaderContainer {
     
     private let vn_vertex_func_string = "obj_vertex_normal_vertex_func"
@@ -418,13 +420,32 @@ final class ObjShaderContainer {
     private var vn_vertex_func: MTLFunction?
     private var vn_fragment_func: MTLFunction?
     
+    private var vertexNormalPipelineObject: MTLRenderPipelineState! = nil
+    
+    // =============================================================================
+    // PUBLIC INTERFACE
+    // =============================================================================
 
     init(device: MTLDevice) {
         let library = openNewDefaultLibrary(device)
         checkFunctionNames(library!)
         resolveFunctions(library!)
+        compileRenderPipelineShaderObjects(device)
     }
     
+    func pipelineObjectForObjFormat(objFormat: ObjFormat) -> MTLRenderPipelineState{
+        switch objFormat {
+        case .VERTEX_NORMAL:
+            return vertexNormalPipelineObject
+            
+        case .VERTEX, .VERTEX_TEXTURE, .VERTEX_TEXTURE_NORMAL:
+            fatalError("vertex only, vetex texture and vertex texture normal formats are not supported")
+        }
+    }
+    
+    // =============================================================================
+    // END OF PUBLIC INTERFACE
+    // =============================================================================
     private func openNewDefaultLibrary(device: MTLDevice) -> MTLLibrary?{
         return device.newDefaultLibrary()
     }
@@ -443,6 +464,7 @@ final class ObjShaderContainer {
     }
     
     private func resolveFunctions(lib: MTLLibrary) {
+        // for now just grab vertexnormal and fragment normal functions
         vn_vertex_func = lib.newFunctionWithName(vn_vertex_func_string)
         vn_fragment_func = lib.newFunctionWithName(vn_fragment_func_string)
     }
@@ -450,5 +472,16 @@ final class ObjShaderContainer {
     private func compileRenderPipelineShaderObjects(device: MTLDevice) {
         let pipelineDesc: MTLRenderPipelineDescriptor = MTLRenderPipelineDescriptor()
         
+        // For now just create a vertexNormal pipeline object
+        pipelineDesc.colorAttachments[0].pixelFormat = .BGRA8Unorm
+        pipelineDesc.depthAttachmentPixelFormat = .Depth32Float
+        pipelineDesc.vertexFunction = vn_vertex_func
+        pipelineDesc.fragmentFunction = vn_fragment_func
+        
+        do {
+            vertexNormalPipelineObject = try device.newRenderPipelineStateWithDescriptor(pipelineDesc)
+        }catch let error as NSError {
+            fatalError(error.localizedDescription)
+        }
     }
 }
