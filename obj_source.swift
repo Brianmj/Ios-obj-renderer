@@ -350,7 +350,8 @@ class MaterialReader {
     
 }
 
-final class ObjContainer {
+// The class to hold the model vertex, texture and normal data
+final class ObjDataContainer {
     private let buffer: MTLBuffer! = nil
     private var format: ObjFormat = ObjFormat.VERTEX
     private var vertexCount: Int = 0
@@ -435,11 +436,18 @@ final class ObjShaderContainer {
     
     func pipelineObjectForObjFormat(objFormat: ObjFormat) -> MTLRenderPipelineState{
         switch objFormat {
+            
+        case .VERTEX:
+            fatalError("Vertex only format not supported yet")
+            
         case .VERTEX_NORMAL:
             return vertexNormalPipelineObject
             
-        case .VERTEX, .VERTEX_TEXTURE, .VERTEX_TEXTURE_NORMAL:
-            fatalError("vertex only, vetex texture and vertex texture normal formats are not supported")
+        case .VERTEX_TEXTURE:
+            fatalError("Vertex texture format not supported yet")
+            
+        case .VERTEX_TEXTURE_NORMAL:
+            fatalError("vertex texture normal formats are not supported")
         }
     }
     
@@ -474,7 +482,8 @@ final class ObjShaderContainer {
         
         // For now just create a vertexNormal pipeline object
         pipelineDesc.colorAttachments[0].pixelFormat = .BGRA8Unorm
-        pipelineDesc.depthAttachmentPixelFormat = .Depth32Float
+        pipelineDesc.depthAttachmentPixelFormat = .Depth32Float_Stencil8
+        pipelineDesc.stencilAttachmentPixelFormat = .Depth32Float_Stencil8
         pipelineDesc.vertexFunction = vn_vertex_func
         pipelineDesc.fragmentFunction = vn_fragment_func
         
@@ -485,3 +494,17 @@ final class ObjShaderContainer {
         }
     }
 }
+
+final class ObjRenderer {
+    
+    private let shaderContainer: ObjShaderContainer
+    
+    init(device: MTLDevice) {
+        shaderContainer = ObjShaderContainer(device: device)
+    }
+    
+    func drawObj(commandBuffer: MTLCommandBuffer, obj: ObjDataContainer, drawMode: MTLPrimitiveType = .Triangle) {
+        
+    }
+}
+    
